@@ -1,0 +1,47 @@
+name: Build & Release
+
+# Builds installers for macOS (Apple Silicon + Intel) and Windows, and attaches
+# them to the GitHub release. Runs on every pushed version tag (v*), and can be
+# triggered manually to (re)populate the release matching package.json's version.
+#
+# GitHub Actions is free for public repositories, so this costs nothing.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest # Apple Silicon runner; builds arm64 + x64 dmgs
+          - os: windows-latest # builds the Windows .exe installer
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build client
+        run: npm run build
+
+      - name: Build & publish installers
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx electron-builder --publish always

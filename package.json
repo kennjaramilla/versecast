@@ -1,0 +1,51 @@
+{
+  "name": "versecast",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bible-verse presenter for OBS — KJV + Ang Dating Biblia 1905, up to 4 split panes. Built for the MCGI Ortigas locale.",
+  "type": "module",
+  "main": "electron/main.mjs",
+  "scripts": {
+    "data": "node scripts/normalize.mjs",
+    "dev": "concurrently -n server,client -c blue,green \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:server": "node server/index.mjs",
+    "dev:client": "npm --prefix client run dev",
+    "build": "npm --prefix client install && npm --prefix client run build",
+    "start": "node server/index.mjs",
+    "app": "npm run build && electron .",
+    "dist": "npm run build && electron-builder --mac",
+    "install:all": "npm install && npm --prefix client install"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "ph.mcgi.versecast",
+    "productName": "VerseCast",
+    "asar": true,
+    "files": [
+      "electron/**",
+      "server/**",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "client/dist",
+        "to": "client/dist"
+      }
+    ],
+    "mac": {
+      "target": [
+        "dmg",
+        "dir"
+      ],
+      "category": "public.app-category.utilities"
+    }
+  }
+}

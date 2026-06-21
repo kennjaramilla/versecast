@@ -1,0 +1,15 @@
+# dependencies
+node_modules/
+client/node_modules/
+
+# builds
+client/dist/
+dist/
+release/
+
+# raw downloaded Bible source (regenerate with `npm run data`)
+data/raw/
+
+# logs / os
+*.log
+.DS_Store

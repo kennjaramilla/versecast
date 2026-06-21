@@ -1,7 +1,8 @@
 // The OBS Browser Source page. Fully transparent by default so it composites
-// over video. Renders 1-4 panes of verse text in an MCGI-style panel, driven
+// over video. Renders 1-4 panes of verse text in a clean verse panel, driven
 // entirely by the synced live state. Read-only.
 
+import type { CSSProperties } from 'react';
 import { useEffect } from 'react';
 import { useSync } from '../lib/sync';
 import type { LiveState, Pane, Style } from '../shared/types';
@@ -16,6 +17,27 @@ const GRID: Record<number, string> = {
 
 // Base text size shrinks as more panes share the screen.
 const TEXT_VW: Record<number, number> = { 1: 3.0, 2: 2.2, 3: 1.7, 4: 1.7 };
+
+// Calm deep-blue gradient (ocean navy) with a soft vignette — a worship feel
+// with strong white-text contrast. Shared by the display and the preview.
+export const BLUE_BG: CSSProperties = {
+  background:
+    'radial-gradient(120% 120% at 50% 0%, #16407a 0%, #13315c 38%, #0b2545 70%, #0a1633 100%)',
+};
+
+/** Background as a Tailwind class + optional inline style for the chosen mode. */
+export function backgroundStyle(bg: Style['background']): { className: string; style?: CSSProperties } {
+  switch (bg) {
+    case 'dark':
+      return { className: 'bg-black/80' };
+    case 'gradient':
+      return { className: 'bg-gradient-to-b from-black/85 to-black/40' };
+    case 'blue':
+      return { className: '', style: BLUE_BG };
+    default:
+      return { className: '' }; // transparent — composites over OBS video
+  }
+}
 
 export default function Display() {
   const { state, connected } = useSync();
@@ -32,17 +54,13 @@ export default function Display() {
 
   const { layout, blackout, panes, style } = state;
   const visiblePanes = panes.slice(0, layout);
-  const bgClass =
-    style.background === 'dark'
-      ? 'bg-black/80'
-      : style.background === 'gradient'
-        ? 'bg-gradient-to-b from-black/85 to-black/40'
-        : '';
+  const bg = backgroundStyle(style.background);
 
   return (
     <div
-      className={`h-screen w-screen overflow-hidden transition-opacity ${bgClass}`}
+      className={`h-screen w-screen overflow-hidden transition-opacity ${bg.className}`}
       style={{
+        ...bg.style,
         opacity: blackout ? 0 : 1,
         transitionDuration: `${style.transitionMs}ms`,
         fontFamily: style.fontFamily,
@@ -74,12 +92,7 @@ function VersePane({ pane, style, layout }: { pane: Pane; style: Style; layout: 
             animationDuration: `${style.transitionMs}ms`,
           }}
         >
-          <p
-            className="vc-verse font-medium leading-[1.32]"
-            style={{ fontSize: `${sizeVw}vw` }}
-          >
-            {pane.text}
-          </p>
+          {/* Reference heading sits above the verse, like a titled panel. */}
           {(style.showReference || style.showVersionLabel) && (
             <div
               className="vc-ref flex items-baseline gap-[1.2vmin] font-semibold tracking-wide"
@@ -96,6 +109,12 @@ function VersePane({ pane, style, layout }: { pane: Pane; style: Style; layout: 
               )}
             </div>
           )}
+          <p
+            className="vc-verse font-medium leading-[1.32]"
+            style={{ fontSize: `${sizeVw}vw` }}
+          >
+            {pane.text}
+          </p>
         </div>
       )}
     </div>

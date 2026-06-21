@@ -11,6 +11,7 @@ import VersePicker from './VersePicker';
 import StylePanel from './StylePanel';
 import Queue, { type Slide } from './Queue';
 import Preview from './Preview';
+import SearchPalette from './SearchPalette';
 
 export default function Control() {
   const { state, connected, publish, update } = useSync();
@@ -18,10 +19,23 @@ export default function Control() {
   const [versions, setVersions] = useState<VersionMeta[]>([]);
   const [active, setActive] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
     loadBooks().then(setBooks);
     loadVersions().then(setVersions);
+  }, []);
+
+  // Global ⌘K / Ctrl-K opens the search palette.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setSearchOpen((o) => !o);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, []);
 
   const displayUrl = `${window.location.origin}/display`;
@@ -118,6 +132,9 @@ export default function Control() {
         </div>
 
         <div className="ml-auto flex items-center gap-2">
+          <Button tone="default" onClick={() => setSearchOpen(true)} title="Search verses (⌘K)">
+            🔍 Search <span className="ml-1 rounded bg-black/30 px-1.5 py-0.5 text-[10px] text-white/60">⌘K</span>
+          </Button>
           {state.blackout ? (
             <Button tone="primary" onClick={() => update((s) => ({ ...s, blackout: false }))}>● SHOW</Button>
           ) : (
@@ -125,6 +142,14 @@ export default function Control() {
           )}
         </div>
       </header>
+
+      <SearchPalette
+        open={searchOpen}
+        books={books}
+        versions={versions}
+        onPick={pick}
+        onClose={() => setSearchOpen(false)}
+      />
 
       {/* Body */}
       <div className="grid min-h-0 flex-1 grid-cols-[320px_1fr_300px] gap-3 p-3">

@@ -2,7 +2,7 @@
   "name": "versecast",
   "version": "0.1.0",
   "private": true,
-  "description": "Bible-verse presenter for OBS — KJV + Ang Dating Biblia 1905, up to 4 split panes. Built for the MCGI Ortigas locale.",
+  "description": "Open-source Bible-verse presenter for OBS — show scripture in multiple translations (KJV, Ang Dating Biblia 1905, extensible) with up to 4 split panes.",
   "type": "module",
   "main": "electron/main.mjs",
   "author": "Kenneth Jaramilla",
@@ -27,7 +27,7 @@
     "electron-builder": "^25.1.8"
   },
   "build": {
-    "appId": "ph.mcgi.versecast",
+    "appId": "io.github.kennjaramilla.versecast",
     "productName": "VerseCast",
     "asar": true,
     "directories": {

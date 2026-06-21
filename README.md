@@ -1,12 +1,13 @@
 # VerseCast
 
-A Bible-verse presenter for live broadcasts, built for the **MCGI Ortigas locale**.
-Show verses on screen through **OBS**, in **King James Version** and **Ang Dating
-Biblia 1905** (Tagalog), with **1–4 split panes** — independent verses per pane or
-the same reference linked across versions.
+An open-source Bible-verse presenter for live broadcasts. Show verses on screen
+through **OBS**, in **King James Version** and **Ang Dating Biblia 1905** (Tagalog)
+— with more translations easy to add — using **1–4 split panes**: independent verses
+per pane, or the same reference linked across versions.
 
 Runs **locally and offline**. The operator works in a control window; OBS pulls a
-clean, transparent display page through a Browser Source.
+clean, transparent display page through a Browser Source. Free to use and adapt for
+any church, ministry, or stream.
 
 ---
 
@@ -37,8 +38,11 @@ Other device ───┘   (localhost + LAN, port 4321)
 - **Fast operation** — type `John 3:16` or `Juan 3:16`, dropdowns, clickable verse list,
   prev/next verse with chapter crossing.
 - **Queue / playlist** — prepare verses ahead of a service, push live with one click.
-- **MCGI-style look** — full-screen verse panel, transparent for OBS, with text size,
-  font, colors, alignment, reference/version labels, and fade controls.
+- **Clean broadcast look** — full-screen verse panel with the reference on top, a
+  relaxing blue gradient (or transparent for overlay), plus text size, font, colors,
+  alignment, reference/version labels, and fade controls.
+- **Global search** — ⌘K palette: typo-tolerant reference lookup (`jhn 3 16`) or
+  full-text keyword search across every translation (`love the world`).
 - **Two-device option** — run the control panel from a laptop/tablet on the same WiFi
   while OBS runs on the main Mac (use the LAN URL shown on launch).
 - **Clear / blackout** — instantly hide the screen without losing the loaded verses.
@@ -90,7 +94,7 @@ Both versions are **public domain** and bundled from the
 [getBible](https://getbible.net) v2 dataset:
 
 - **King James Version** (`kjv`)
-- **Ang Dating Biblia / Ang Biblia 1905** (`tagalog`) — the version used by MCGI
+- **Ang Dating Biblia / Ang Biblia 1905** (`tagalog`) — a widely-used Tagalog translation
 
 `npm run data` re-downloads the raw text and regenerates the normalized JSON in
 `client/public/bible/`.
@@ -107,3 +111,14 @@ client/      Vite + React + TypeScript
 electron/    desktop wrapper (starts the server, opens the control window)
 scripts/     normalize.mjs — turns raw getBible JSON into the bundled schema
 ```
+
+## Contributing & adding translations
+
+Translations are bundled as JSON under `client/public/bible/`. To add one, extend
+`scripts/normalize.mjs` with another public-domain source (the [getBible](https://getbible.net)
+v2 dataset has many) and add it to `versions.json`. Pull requests welcome.
+
+## License
+
+[MIT](LICENSE) © Kenneth Jaramilla. The bundled KJV and Ang Dating Biblia 1905
+texts are public domain.

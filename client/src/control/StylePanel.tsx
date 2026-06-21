@@ -21,6 +21,7 @@ export default function StylePanel({ style, onChange }: {
 
       <Row label="Background">
         <Select value={style.background} onChange={(v) => onChange({ background: v as Style['background'] })} className="w-full">
+          <option value="blue">Relaxing blue</option>
           <option value="transparent">Transparent (over video)</option>
           <option value="dark">Dark panel</option>
           <option value="gradient">Gradient</option>

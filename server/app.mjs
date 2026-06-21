@@ -39,7 +39,7 @@ function defaultState() {
       fontScale: 1,
       textColor: '#ffffff',
       accentColor: '#ffd34d',
-      background: 'transparent', // transparent | dark | gradient
+      background: 'blue', // blue | transparent | dark | gradient
       showReference: true,
       showVersionLabel: true,
       uppercaseReference: false,

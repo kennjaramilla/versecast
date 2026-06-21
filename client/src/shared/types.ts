@@ -21,7 +21,7 @@ export type Style = {
   fontScale: number;
   textColor: string;
   accentColor: string;
-  background: 'transparent' | 'dark' | 'gradient';
+  background: 'transparent' | 'dark' | 'gradient' | 'blue';
   showReference: boolean;
   showVersionLabel: boolean;
   uppercaseReference: boolean;

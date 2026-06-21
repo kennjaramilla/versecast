@@ -6,8 +6,7 @@ through **OBS**, in **King James Version** and **Ang Dating Biblia 1905** (Tagal
 per pane, or the same reference linked across versions.
 
 Runs **locally and offline**. The operator works in a control window; OBS pulls a
-clean, transparent display page through a Browser Source. Free to use and adapt for
-any church, ministry, or stream.
+clean, transparent display page through a Browser Source.
 
 ---
 

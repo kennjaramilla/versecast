@@ -45,3 +45,20 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx electron-builder --publish always
+
+  # Strip electron-builder's auto-update helper files (.yml / .blockmap) so the
+  # release shows only the installers people actually download.
+  cleanup:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove auto-update helper assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="v$(node -p "require('./package.json').version")"
+          echo "Cleaning helper assets on $tag"
+          gh release view "$tag" -R "$GITHUB_REPOSITORY" --json assets -q '.assets[].name' \
+            | { grep -E '\.(blockmap|yml)$' || true; } \
+            | while read -r a; do gh release delete-asset "$tag" "$a" -R "$GITHUB_REPOSITORY" --yes && echo "deleted $a"; done

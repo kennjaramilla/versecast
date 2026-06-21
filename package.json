@@ -5,6 +5,7 @@
   "description": "Bible-verse presenter for OBS — KJV + Ang Dating Biblia 1905, up to 4 split panes. Built for the MCGI Ortigas locale.",
   "type": "module",
   "main": "electron/main.mjs",
+  "author": "Kenneth Jaramilla",
   "scripts": {
     "data": "node scripts/normalize.mjs",
     "dev": "concurrently -n server,client -c blue,green \"npm:dev:server\" \"npm:dev:client\"",
@@ -22,13 +23,16 @@
   },
   "devDependencies": {
     "concurrently": "^9.1.0",
-    "electron": "^33.2.1",
+    "electron": "^33.4.11",
     "electron-builder": "^25.1.8"
   },
   "build": {
     "appId": "ph.mcgi.versecast",
     "productName": "VerseCast",
     "asar": true,
+    "directories": {
+      "output": "release"
+    },
     "files": [
       "electron/**",
       "server/**",

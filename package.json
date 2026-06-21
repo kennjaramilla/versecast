@@ -50,6 +50,7 @@
     ],
     "mac": {
       "icon": "build/icon.icns",
+      "artifactName": "${productName}-${version}-${arch}.dmg",
       "target": [
         {
           "target": "dmg",
@@ -63,6 +64,7 @@
     },
     "win": {
       "icon": "build/icon.png",
+      "artifactName": "${productName}-Setup-${version}.exe",
       "target": [
         {
           "target": "nsis",
@@ -88,7 +90,8 @@
       {
         "provider": "github",
         "owner": "kennjaramilla",
-        "repo": "versecast"
+        "repo": "versecast",
+        "releaseType": "release"
       }
     ]
   }
